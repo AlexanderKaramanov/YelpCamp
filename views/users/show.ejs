@@ -1,0 +1,47 @@
+<%- include("../partials/header") %>
+
+<div class="row">
+	<div class="col-md-4">
+		<h1><%= user.firstName + " " + user.lastName %></h1>
+		<div class="thumbnail">
+			<img src="<%= user.avatar %>" alt="user profile image">
+			<div class="caption">
+				<a href="mailto:<%= user.email %>"><%= user.email %></a>
+			</div>
+		</div>
+		<div style="text-align: justify">
+			<p>	
+				Flank andouille tongue pork chop ball tip. Landjaeger pastrami bresaola andouille spare ribs fatback strip steak cow capicola swine short ribs flank turkey kevin. Prosciutto pork loin ham 				kevin, chislic ribeye salami doner pork cow shoulder pastrami spare ribs porchetta capicola. Boudin tri-tip pancetta tongue turkey strip steak. Burgdoggen turkey brisket sirloin. Pork chop 				 meatball ham short ribs ham hock capicola hamburger shankle landjaeger jerky chuck.
+			</p>
+			<p>
+				Leberkas shankle turducken, pork chop beef t-bone rump beef ribs. Salami jowl ball tip frankfurter shoulder turkey sirloin, tenderloin pork cupim landjaeger kevin tongue. Flank landjaeger 				burgdoggen shank fatback chuck brisket. Flank doner jerky pancetta tail beef ribs short loin landjaeger pork t-bone meatloaf ground round porchetta. Strip steak sausage sirloin andouille 					drumstick brisket. Ribeye chislic pig, venison meatball tri-tip boudin landjaeger pork chop doner tail shankle ham hock.
+			</p>
+			<hr>
+			<a class="btn btn-sm btn-warning" href="/users/<%= user._id %>/edit">Edit Profile</a>
+			<% if (currentUser && currentUser.isAdmin) { %>
+				<form class="delete-form" action="/users/<%= user._id %>?_method=DELETE" method="POST">
+					<button class="btn btn-sm btn-danger">Delete Profile</button>
+				</form>
+			<% } %>
+			<a class="btn btn-sm btn-info" href="/campgrounds"><i class="fa fa-arrow-left"></i> Back to all Campgrounds</a>
+			<br>
+			<br>
+			<br>
+		</div>	
+	</div>
+	<div class="col-md-8">
+		<div id="campList">
+			<h3 id="campListHeader"><%= user.username %>'s campgrounds</h3>
+			<div class="list-group">
+				<% campgrounds.forEach(function(campground) { %>
+					<a class="list-group-item" href="/campgrounds/<%= campground.id %>"><%= campground.name %></a>
+				<% }); %>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+
+<%- include("../partials/footer") %>

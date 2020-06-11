@@ -1,0 +1,53 @@
+.thumbnail img {
+	width: 100%;
+}
+
+#allImages {
+	height: 168px;
+}
+
+#singleImage {
+	height: 600px;
+}
+
+.thumbnail .caption-full {
+	padding: 20px;
+	padding-bottom: 45px;
+}
+
+.delete-form {
+	display: inline;
+}
+
+hr {
+	margin-top: 7px;
+	margin-bottom: 7px;
+}
+
+.checked {
+	color: orange;
+}
+
+#campList {
+	margin-left: 300px;
+	margin-top: 100px;
+	text-align: center;
+}
+
+#campListHeader {
+	margin-bottom: 50px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
