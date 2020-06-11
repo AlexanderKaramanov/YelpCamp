@@ -12,7 +12,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
 		Campground.findById(req.params.id, function(err, foundCampground){
 			if (err || !foundCampground) {
 				req.flash("error", "Campground was not found.");
-				res.redirect("back");
+				res.redirect("/campgrounds");
 			} else {
 				// does the logged in user own the campground ?
 				if (foundCampground.author.id.equals(req.user._id) || req.user.isAdmin) {
@@ -20,17 +20,16 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
 				} else {
 					// otherwise, redirect 
 					req.flash("error", "You must be the creator of the campground in ordet to do that!");
-					res.redirect("back");
+					res.redirect("/campgrounds");
 				}
 			}
 		});
 	} else {
 		// if not, redirect
 		req.flash("error", "You need to be logged in to do that!");
-		res.redirect("back");
+		res.redirect("/login");
 	}
 }
-
 
 middlewareObj.checkCommentOwnership = function(req, res, next) {
 	// is a user logged in ?
@@ -38,7 +37,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 		Comment.findById(req.params.comment_id, function(err, foundComment){
 			if (err || !foundComment) {
 				req.flash("error", "Comment was not found.");
-				res.redirect("back");
+				res.redirect("/campgrounds");
 			} else {
 				// does the logged in user own the comment ?
 				if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
@@ -46,14 +45,14 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 				} else {
 					// otherwise, redirect
 					req.flash("error", "You must be the creator of the comment in ordet to do that!");
-					res.redirect("back");
+					res.redirect("/campgrounds");
 				}
 			}
 		});
 	} else {
 		// if not, redirect
 		req.flash("error", "You need to be logged in to do that!");
-		res.redirect("back");
+		res.redirect("/login");
 	}
 }
 
@@ -62,20 +61,20 @@ middlewareObj.checkReviewOwnership = function (req, res, next) {
 		Review.findById(req.params.review_id, function (err, foundReview) {
 			if (err || !foundReview) {
 				req.flash("error", "Review was not found.");
-				res.redirect("back");
+				res.redirect("/campgrounds");
 			} else {
 				// does user own the comment?
 				if(foundReview.author.id.equals(req.user._id) || req.user.isAdmin) {
 					next();
 				} else {
 					req.flash("error", "You must be the creator of the review in ordet to do that!")
-					res.redirect("back");
+					res.redirect("/campgrounds");
 				}
 			}
 		});
 	} else {
 		req.flash("error", "You need to be logged in to do that!");
-		res.redirect("back");
+		res.redirect("/login");
 	}
 }
 
@@ -84,7 +83,7 @@ middlewareObj.checkReviewExistence = function (req, res, next) {
 		Campground.findById(req.params.id).populate("reviews").exec(function (err, foundCampground) {
 			if (err || !foundCampground) {
 				req.flash("error", "Campground was not found.");
-				res.redirect("back");
+				res.redirect("/campgrounds");
 			} else {
 				// check if req.user._id exists in foundCampground.reviews
 				var foundUserReview = foundCampground.reviews.some(function (review) {
@@ -100,7 +99,7 @@ middlewareObj.checkReviewExistence = function (req, res, next) {
 		});
 	} else {
 		req.flash("error", "You need to login first.");
-		res.redirect("back");
+		res.redirect("/login");
 	}
 }
 
@@ -118,7 +117,63 @@ middlewareObj.checkUserExistence = function(req, res, next) {
 	} else {
 		// if not, redirect
 		req.flash("error", "You need to be logged in to do that!");
-		res.redirect("back");
+		res.redirect("/login");
+	}
+}
+
+middlewareObj.checkUserExistenceAndAdmin = function(req, res, next) {
+	// is a user logged in
+	if (req.isAuthenticated()) {
+		// is the user an admin
+		if (req.user.isAdmin) {
+			User.findById(req.params.id, function(err, foundUser){
+			if (err || !foundUser) {
+				req.flash("error", "User was not found.");
+				res.redirect("/campgrounds");
+			} else {
+				next();
+			} 
+			});
+		}
+	} else {
+		// if not, redirect
+		req.flash("error", "You have no permission to do that!");
+		res.redirect("/campgrounds");
+	}
+}
+
+middlewareObj.checkIsAdmin = function (req, res, next) {
+	if (req.isAuthenticated()) {
+		if (req.user.isAdmin) {
+			next();
+		} else {
+			req.flash("error", "You have no permission to do that!");
+			res.redirect("/campgrounds");
+		}
+	} else {
+		req.flash("error", "You need to be logged in to do that!");
+		res.redirect("/login");
+	}
+}
+
+middlewareObj.checkCurrentUserOrAdmin = function (req, res, next) {
+	if (req.isAuthenticated()) {
+		User.findById(req.params.id, function (err, foundUser) {
+			if (err || !foundUser) {
+				req.flash("error", "User was not found.");
+				res.redirect("/campgrounds");
+			} else {
+				if (foundUser._id.equals(req.user._id) || req.user.isAdmin) {
+					next();
+				} else {
+					req.flash("error", "You have no permission to do that!");
+					res.redirect("/campgrounds");
+				}
+			}
+		});
+	} else {
+		req.flash("error", "You need to be logged in to do that!");
+		res.redirect("/login");
 	}
 }
 

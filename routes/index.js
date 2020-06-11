@@ -87,7 +87,7 @@ router.get("/users/:id", middleware.checkUserExistence, function(req, res) {
 });
 
 // users index route
-router.get("/users", middleware.isLoggedIn, function (req, res) {
+router.get("/users", middleware.checkIsAdmin, function (req, res) {
 	// get all users from DB
 	User.find({}, function (err, allUsers) {
 	if (err) {
@@ -99,7 +99,7 @@ router.get("/users", middleware.isLoggedIn, function (req, res) {
 });
 
 // users EDIT route 
-router.get("/users/:id/edit", middleware.checkUserExistence, function(req, res){
+router.get("/users/:id/edit", middleware.checkCurrentUserOrAdmin, function(req, res){
 	User.findById(req.params.id, function(err, foundUser){
 		if (err) {
 			console.log(err);
@@ -111,7 +111,7 @@ router.get("/users/:id/edit", middleware.checkUserExistence, function(req, res){
 });
 
 // users UPDATE route
-router.put("/users/:id", middleware.checkUserExistence, function (req, res){
+router.put("/users/:id", middleware.checkCurrentUserOrAdmin, function (req, res){
 	// find and update the correct user
 	User.findByIdAndUpdate(req.params.id, req.body.user, function(err, updatedUser) {
 		if(err){
@@ -126,7 +126,7 @@ router.put("/users/:id", middleware.checkUserExistence, function (req, res){
 });
 
 // users DESTROY route
-router.delete("/users/:id", middleware.checkUserExistence, function(req, res) {
+router.delete("/users/:id", middleware.checkUserExistenceAndAdmin, function(req, res) {
 	// findByIdAndRemove
 	User.findByIdAndRemove(req.params.id, function(err){
 		if (err) {
