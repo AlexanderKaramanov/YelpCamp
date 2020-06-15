@@ -15,7 +15,7 @@ middlewareObj.checkCampgroundOwnership = function(req, res, next) {
 				res.redirect("/campgrounds");
 			} else {
 				// does the logged in user own the campground ?
-				if (foundCampground.author.id.equals(req.user._id) || req.user.isAdmin) {
+				if (foundCampground.author.id.equals(req.user._id) || req.user.isAdmin || req.user.isCampAdmin) {
 					next();
 				} else {
 					// otherwise, redirect 
@@ -40,7 +40,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next) {
 				res.redirect("/campgrounds");
 			} else {
 				// does the logged in user own the comment ?
-				if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin) {
+				if (foundComment.author.id.equals(req.user._id) || req.user.isAdmin || req.user.isCampAdmin) {
 					next();
 				} else {
 					// otherwise, redirect
@@ -64,7 +64,7 @@ middlewareObj.checkReviewOwnership = function (req, res, next) {
 				res.redirect("/campgrounds");
 			} else {
 				// does user own the comment?
-				if(foundReview.author.id.equals(req.user._id) || req.user.isAdmin) {
+				if(foundReview.author.id.equals(req.user._id) || req.user.isAdmin || req.user.isCampAdmin) {
 					next();
 				} else {
 					req.flash("error", "You must be the creator of the review in ordet to do that!")

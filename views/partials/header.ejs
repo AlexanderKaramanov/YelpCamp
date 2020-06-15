@@ -31,7 +31,8 @@
                   <li class="<%= typeof page !== 'undefined' && page === 'login' ? 'active' : '' %>"><a href="/login">Login</a></li>
                   <li class="<%= typeof page !== 'undefined' && page === 'register' ? 'active' : '' %>"><a href="/register">Sign Up</a></li>
               <% } else { %>
-                  <li><a href="#">Signed In As <%= currentUser.username %> <% if (currentUser && currentUser.isAdmin) { %> (Admin) <% } %></a></li>
+                  <li><a href="#">Signed In As <%= currentUser.username %> <% if (currentUser && currentUser.isAdmin) { %> (Admin) <% } else { if (currentUser && currentUser.isCampAdmin) { %>
+				  (Camp Admin) <% }} %></a></li>
 			  	  <% if (currentUser && currentUser.isAdmin) { %>
 				  <li><a href="/users">Admin Panel</a></li>
 			  	  <% } %>

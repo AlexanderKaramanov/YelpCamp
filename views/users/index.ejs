@@ -15,6 +15,7 @@
 					<th>Last name</th>
 					<th>Email</th>
 					<th>Is admin</th>
+					<th>Is camp admin</th>
 					<th>Profile</th>
 					<th>Edit</th>
 					<th>Delete</th>
@@ -26,6 +27,7 @@
 					<td><%= user.lastName %></td>
 					<td><%= user.email %></td>
 					<td><%= user.isAdmin %></td>
+					<td><%= user.isCampAdmin %></td>
 					<td><a class="btn btn-sm btn-info" href="/users/<%= user._id %>">Profile</a></td>
 					<td><a class="btn btn-sm btn-warning" href="/users/<%= user._id %>/edit">Edit</a></td>
 					<td>

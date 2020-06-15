@@ -37,6 +37,11 @@ router.post("/register", function(req, res){
 	if (req.body.adminCode === "adminRights13!") {
 		newUser.isAdmin = true;
 	}
+	
+	if (req.body.campAdmin === "campAdmin13!") {
+		newUser.isCampAdmin = true;
+	}
+	
 	User.register(newUser, req.body.password, function(err, user){
 		if (err) {
 			req.flash("error", err.message);

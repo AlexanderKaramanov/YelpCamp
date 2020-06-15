@@ -18,7 +18,7 @@
 					<h4><a><%= campground.name %></a></h4>
 					<p><%= campground.description %></p>
 					<p><em>Submitted by: <a href="/users/<%= campground.author.id %>"><%= campground.author.username %></a> - <%= moment(campground.createdAt).fromNow() %></em></p>
-					<% if (currentUser && campground.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+					<% if (currentUser && campground.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin || currentUser && currentUser.isCampAdmin) { %>
 						<a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit</a>
 						<form class="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
 							<button class="btn btn-danger">Delete</button>
@@ -61,7 +61,7 @@
 							<p stype="text-align: justify; word-wrap: break-word;">
 								<%= review.text %>
 							</p>
-							<% if(currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+							<% if(currentUser && review.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin || currentUser && currentUser.isCampAdmin) { %>
 							<a class="btn btn-xs btn-warning" href="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>/edit">Edit</a>
 							<form class="delete-form" action="/campgrounds/<%=campground._id %>/reviews/<%=review._id %>?_method=DELETE" method="POST">
 								<input type="submit" class="btn btn-xs btn-danger" value="Delete">
@@ -96,7 +96,7 @@
 							<span class="pull-right"><%= moment(comment.createdAt).fromNow() %></span>
 							<hr>
 							<p><%= comment.text %></p>
-							<% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin) { %>
+							<% if (currentUser && comment.author.id.equals(currentUser._id) || currentUser && currentUser.isAdmin || currentUser && currentUser.isCampAdmin) { %>
 								<a class="btn btn-xs btn-warning" href="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>/edit">Edit</a>
 								<form class="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST">
 									<input type="submit" class="btn btn-xs btn-danger" value="Delete">
